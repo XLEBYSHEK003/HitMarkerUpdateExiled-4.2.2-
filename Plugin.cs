@@ -8,40 +8,25 @@ namespace HitMarker
 {
     public class Plugin : Plugin<Config>
     {
-        public override string Author
-        {
-            get
-            {
-                return "xRoier (Update XLEBYSHEK)";
-            }
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return "HitMarker";
-            }
-        }
+        public override string Author { get; } = "xRoier (Update XLEBYSHEK)";
+        public override string Name { get; } = "HitMarker";
 
         public override void OnEnabled()
         {
-            Exiled.Events.Handlers.Player.Hurting += this.PlayerOnHurting;
-            base.OnEnabled();
+            Exiled.Events.Handlers.Player.Hurting += PlayerOnHurting;
         }
 
         public override void OnDisabled()
         {
-            Exiled.Events.Handlers.Player.Hurting -= this.PlayerOnHurting;
-            base.OnDisabled();
+            Exiled.Events.Handlers.Player.Hurting -= PlayerOnHurting;
         }
-
+        private static readonly System.Random rnd = new System.Random(); 
         private void PlayerOnHurting(HurtingEventArgs ev)
         {
                 ev.Attacker.ShowHint(string.Concat(new object[]
                 {
-                    this.Repeat(this.RNG.Next(1, 14), "\n"),
-                    this.Repeat(this.RNG.Next(1, 5), " "),
+                    Repeat(rnd.Next(1, 14), "\n"),
+                    Repeat(rnd.Next(1, 5), " "),
                     " <color=yellow>Попадение! Нанесено:</color> ",
                     Math.Round((double)ev.Amount, 1),
                     " <color=red></color>"
@@ -49,22 +34,13 @@ namespace HitMarker
             
         }
 
-        private string Repeat(int random, string re)
+        private string Repeat(int random, string source)
         {
-            string text = "";
+            string text = String.Empty;
             for (int i = 0; i < random; i++)
-            {
-                text += re;
-            }
+                text += source;
             return text;
         }
 
-        private Random RNG
-        {
-            get
-            {
-                return new Random();
-            }
-        }
     }
 }
